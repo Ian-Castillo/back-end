@@ -17,8 +17,7 @@ router.post('/register', (req, res) => {
   
     Users.add(user) //if succesfully added, token is generated based on that user
       .then(saved => {
-        
-        res.status(201).json({  });
+        res.status(201).json({ username: saved.username });
       })
       .catch(err => {
         res.status(500).json({ error: err });
@@ -43,18 +42,19 @@ router.post('/register', (req, res) => {
         }
       })
       .catch(error => {
-        res.status(500).json(error);
+        res.status(500).json({error});
+        console.log(error);
       });
   }); 
   
   function generateToken(user) {
     const payload = {
       subject: user.id,
-      username: username.username
+      username: user.username 
     };
 
     const options = {
-      expiresin: '24h',
+      expiresIn: '24h',
     };
     return jwt.sign (payload, secrets.jwtSecret, options)
   }
